@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منوی کشویی با جستجو و پروفایل</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+            transition: 0.3s;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+            width: 200px;
+        }
+
+        .search-box input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            width: 170px;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 16px;
+        }
+
+        .search-box button:hover {
+            background-color: #555;
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 30px;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            margin-top: 10px;
+        }
+
+        .menu-icon div {
+            position: absolute;
+            background-color: #333;
+            height: 5px;
+            border-radius: 5px;
+        }
+
+        .menu-icon div:nth-child(1) {
+            top: 0;
+            width: 100%;
+        }
+
+        .menu-icon div:nth-child(2) {
+            top: 50%;
+            width: 70%;
+        }
+
+        .menu-icon div:nth-child(3) {
+            top: 100%;
+            width: 50%;
+        }
+
+        .footer-buttons {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .footer-buttons button {
+            background-color: #fff;
+            color: #333;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .footer-buttons button:hover {
+            background-color: #ddd;
+        }
+
+        .footer-buttons button:before {
+            content: "|";
+            margin: 0 10px;
+        }
+
+        .footer-buttons button:first-child:before {
+            content: "";
+        }
+
+        /* کشو */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            transition: 0.3s;
+            z-index: 99;
+            padding-top: 50px;
+        }
+
+        .side-menu a {
+            display: block;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .side-menu a:hover {
+            background-color: #ddd;
+        }
+
+        .side-menu .close-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .open-menu-btn {
+            cursor: pointer;
+        }
+
+        /* هنگامی که منوی کشویی باز می‌شود */
+        .side-menu.open {
+            left: 0;
+        }
+
+        /* مخفی کردن منوی بالا (جستجو و پروفایل) زمانی که منو باز می‌شود */
+        .header.hidden {
+            display: none;
+        }
+
+        /* افزودن فاصله به پایین دکمه‌ها وقتی منو باز می‌شود */
+        .footer-buttons.menu-open {
+            margin-top: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header" id="header">
+        <div class="profile-icon" onclick="showProfile()">👤</div>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="جستجو کنید...">
+            <button onclick="search()">جستجو</button>
+        </div>
+    </div>
+    <div class="menu-icon open-menu-btn" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <!-- کشو -->
+    <div class="side-menu" id="sideMenu">
+        <span class="close-btn" onclick="toggleMenu()">×</span>
+        <a href="admin-login.html">ورود ادمین</a>
+    </div>
+
+    <!-- دکمه‌های پایین صفحه -->
+    <div class="footer-buttons" id="footerButtons">
+        <button>سبد خرید</button>
+        <button>محصولات</button>
+        <button>خانه</button>
+    </div>
+
+    <script>
+        function search() {
+            const query = document.getElementById("searchInput").value;
+            if (query) {
+                alert("شما جستجو کردید: " + query);
+            } else {
+                alert("لطفاً چیزی برای جستجو وارد کنید!");
+            }
+        }
+
+        function showProfile() {
+            alert("صفحه پروفایل کاربر");
+        }
+
+        // کشو
+        function toggleMenu() {
+            const sideMenu = document.getElementById("sideMenu");
+            const header = document.getElementById("header");
+            const footerButtons = document.getElementById("footerButtons");
+
+            sideMenu.classList.toggle("open");
+            header.classList.toggle("hidden");
+            footerButtons.classList.toggle("menu-open");
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحه اصلی</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .product-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            margin: 10px;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-item h3 {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        .product-item p {
+            color: #555;
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .color-option {
+            width: 30%;
+            height: 30px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>محصولات</h1>
+<div class="product-list" id="productList"></div>
+
+<script>
+    // Load products from localStorage
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+
+    const productList = document.getElementById('productList');
+
+    products.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('product-item');
+
+        // Product image
+        const productImage = document.createElement('img');
+        productImage.src = product.images[0];
+        productItem.appendChild(productImage);
+
+        // Product name
+        const productName = document.createElement('h3');
+        productName.textContent = product.name;
+        productItem.appendChild(productName);
+
+        // Product colors
+        const colorOptions = document.createElement('div');
+        colorOptions.classList.add('color-options');
+        product.colors.split(', ').forEach(color => {
+            const colorOption = document.createElement('div');
+            colorOption.classList.add('color-option');
+            colorOption.style.backgroundColor = color;
+            colorOptions.appendChild(colorOption);
+        });
+        productItem.appendChild(colorOptions);
+
+        productList.appendChild(productItem);
+    });
+</script>
+
+</body>
+</html>
